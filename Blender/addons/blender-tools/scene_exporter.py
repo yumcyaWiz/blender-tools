@@ -4,6 +4,7 @@ from mathutils import Vector, Matrix
 import math
 import json
 from functools import reduce
+import os
 
 def vec2array( _vector ):
     return [ _vector.x, _vector.z, -_vector.y ]
@@ -13,6 +14,14 @@ def unit(vec):
     length = math.sqrt(reduce(lambda x, y: x + y, vec_sq))
     return [x for x in map(lambda x: x / length, vec)]
 
+def export_scene (outdir, filename):
+    scene_data = OrderedDict()
+    scene_data.update(export_camera())
+    scene_data.update(export_lights())
+    outfilename = os.path.join(outdir, filename)
+    f = open(outfilename, "w")
+    f.write(json.dumps(scene_data, indent=4))
+    f.close()
 
 def export_camera():
     obj_camera = bpy.data.objects["Camera"]
@@ -26,10 +35,7 @@ def export_camera():
 
     camera_data = OrderedDict()
     camera_data['camera'] = camera_param
-    outputfilename = '/tmp/camera.json'
-    f = open(outputfilename, "w")
-    f.write(json.dumps(camera_data, indent=2))
-    f.close()
+    return camera_data
 
 def export_lights():
     lights = []
@@ -78,7 +84,4 @@ def export_lights():
 
     data = OrderedDict()
     data['lights'] = lights
-    outputfilename = '/tmp/lights.json'
-    f = open(outputfilename, "w")
-    f.write(json.dumps(data, indent=2))
-    f.close()
+    return data
