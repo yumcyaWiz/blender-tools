@@ -31,6 +31,11 @@ def export_camera():
     camera_param['rotation'] = vec2array(obj_camera.rotation_euler)
     camera_param['lookat'] = vec2array((obj_camera.matrix_world * Vector( ( 0, 0, -1, 1 ) ) ).xyz)
     camera_param['fov'] = bpy.data.cameras['Camera'].angle * 180 / math.pi
+    camera_param['lens'] = bpy.data.cameras['Camera'].lens
+    camera_param['sensorWidth'] = bpy.data.cameras['Camera'].sensor_width
+    camera_param['sensorHeight'] = bpy.data.cameras['Camera'].sensor_height
+    camera_param['dofDistance'] = bpy.data.cameras['Camera'].dof_distance
+    camera_param['fStop'] = bpy.data.cameras['Camera'].gpu_dof.fstop
     camera_param['up'] = vec2array((obj_camera.matrix_world * Vector( ( 0, 1, 0, 0 ) ) ).xyz)
 
     camera_data = OrderedDict()

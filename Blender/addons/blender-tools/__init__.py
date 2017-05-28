@@ -71,13 +71,13 @@ def scene_update(context):
     is_updated = False
     if bpy.data.objects.is_updated:
         for ob in bpy.data.objects:
-            if ob.is_updated:
+            if ob.is_updated or ob.is_updated_data:
                 is_updated = True
         for ob in bpy.data.lamps:
-            if ob.is_updated:
+            if ob.is_updated or ob.is_updated_data:
                 is_updated = True
         for ob in bpy.data.cameras:
-            if ob.is_updated:
+            if ob.is_updated or ob.is_updated_data:
                 is_updated = True
 
     if is_updated == False:
