@@ -1,0 +1,3 @@
+[submodule "lib/WebSocket-for-Python"]
+	path = lib/WebSocket-for-Python
+	url = git@github.com:soma-arc/WebSocket-for-Python
