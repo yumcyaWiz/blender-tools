@@ -14,6 +14,12 @@ def unit(vec):
     length = math.sqrt(reduce(lambda x, y: x + y, vec_sq))
     return [x for x in map(lambda x: x / length, vec)]
 
+def get_scene_data():
+    scene_data = OrderedDict()
+    scene_data.update(export_camera())
+    scene_data.update(export_lights())
+    return scene_data
+
 def export_scene (outdir, filename):
     scene_data = OrderedDict()
     scene_data.update(export_camera())
