@@ -75,7 +75,7 @@ class StartExportButtonOperation(bpy.types.Operator):
         global g_ws_connected
         g_ws = WSClient('ws://localhost:8081/websocket',
                         protocols=['http-only', 'chat'])
-        g_ws.daemon = False
+        g_ws.daemon = True
         try:
             g_ws.connect()
             g_ws_connected = True
@@ -99,8 +99,10 @@ class StopExportButtonOperation(bpy.types.Operator):
     def execute(self, context):
         global g_exporting_scene
         global g_ws
-        g_ws.close()
-
+        global g_ws_connected
+        if g_ws_connected:
+            g_ws.close()
+        g_ws_connected = False
         g_exporting_scene = False
         print('stop')
         bpy.app.handlers.scene_update_post.remove(scene_update)
