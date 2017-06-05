@@ -3,6 +3,7 @@ from .scene_exporter import get_scene_data, export_scene
 from collections import OrderedDict
 from ws4py.client.threadedclient import WebSocketClient
 import json
+import threading
 
 bl_info = {
     "name": "Blender Tools",
@@ -85,7 +86,6 @@ class StartExportButtonOperation(bpy.types.Operator):
         g_dof_distance = -1
         g_fstop = -1
 
-        print('start')
         if g_ws_connected:
             send_scene_data(g_ws)
         write_scene_data()
@@ -108,11 +108,13 @@ class StopExportButtonOperation(bpy.types.Operator):
         bpy.app.handlers.scene_update_post.remove(scene_update)
         return {'FINISHED'}
 
+g_update_timer = None
 def scene_update(context):
     global g_dof_distance
     global g_fstop
     global g_ws
     global g_ws_connected
+    global g_update_timer
     is_updated = False
     if bpy.data.objects.is_updated:
         for ob in bpy.data.objects:
@@ -136,9 +138,15 @@ def scene_update(context):
     if is_updated == False:
         return;
     print('scene was updated')
-    if g_ws_connected:
-        send_scene_data(g_ws)
-    write_scene_data()
+    def export_data():
+        if g_ws_connected:
+            send_scene_data(g_ws)
+        write_scene_data()
+
+    if g_update_timer is not None:
+        g_update_timer.cancel()
+    g_update_timer = threading.Timer(0.5, export_data)
+    g_update_timer.start()
 
 class ToolsRender(bpy.types.RenderEngine):
     bl_idname = 'TOOLS_RENDER'
