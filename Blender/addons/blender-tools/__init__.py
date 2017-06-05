@@ -1,7 +1,6 @@
 import bpy
 from .scene_exporter import get_scene_data, export_scene
 from collections import OrderedDict
-from bpy.props import CollectionProperty, BoolProperty, StringProperty
 from ws4py.client.threadedclient import WebSocketClient
 import json
 
@@ -40,19 +39,6 @@ class WSClient(WebSocketClient):
 
     def received_message(self, m):
         print("=> %d %s" % (len(m), str(m)))
-
-class ToolsPreferences (bpy.types.AddonPreferences):
-    bl_idname = __package__
-    out_dir = StringProperty(
-        name = "Path to scene file folder",
-        description = "Path to scene file folder",
-        subtype = "DIR_PATH",
-        default='/tmp/'
-    )
-
-    def draw(self, context):
-        layout = self.layout
-        layout.prop(self, "out_dir")
 
 g_exporting_scene = False
 # dof_distance and fstop are not detected by is_updated.
@@ -152,10 +138,39 @@ def scene_update(context):
         send_scene_data(g_ws)
     write_scene_data()
 
+class ToolsRender(bpy.types.RenderEngine):
+    bl_idname = 'TOOLS_RENDER'
+    bl_label = 'Blender Tools Preview'
+    bl_use_preview = True
+    bl_use_save_buffers = True
+
+    # Simple Render Engine Example
+    # https://docs.blender.org/api/blender_python_api_current/bpy.types.RenderEngine.html
+    def render(self, scene):
+        scale = scene.render.resolution_percentage / 100.0
+        self.size_x = int(scene.render.resolution_x * scale)
+        self.size_y = int(scene.render.resolution_y * scale)
+
+        self.render_scene(scene)
+
+    def render_scene(self, scene):
+        pixel_count = self.size_x * self.size_y
+
+        blue_rect = [[0.0, 0.0, 1.0, 1.0]] * pixel_count
+
+        result = self.begin_result(0, 0, self.size_x, self.size_y)
+        layer = result.layers[0].passes["Combined"]
+        layer.rect = blue_rect
+        self.end_result(result)
+
 def register ():
-    bpy.utils.register_class(ToolsPreferences)
+    from . import ui
+
+    ui.register()
     bpy.utils.register_module(__name__)
 
 def unregister ():
-    bpy.utils.unregister_class(ToolsPreferences)
+    from . import ui
+
+    ui.unregister()
     bpy.utils.unregister_module(__name__)
