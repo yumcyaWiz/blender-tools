@@ -148,30 +148,29 @@ def scene_update(context):
     g_update_timer = threading.Timer(0.5, export_data)
     g_update_timer.start()
 
+from . import engine
 class ToolsRender(bpy.types.RenderEngine):
     bl_idname = 'TOOLS_RENDER'
     bl_label = 'Blender Tools Preview'
     bl_use_preview = True
     bl_use_save_buffers = True
 
-    # Simple Render Engine Example
-    # https://docs.blender.org/api/blender_python_api_current/bpy.types.RenderEngine.html
+    def __init__(self):
+        self.render_pass = None
+
+    def __del__(self):
+        if hasattr(engine, 'render_pass') and self.render_pass is not None:
+            del self.render_pass
+
+    def update(self, data, scene):
+        print('update')
+        if not self.render_pass:
+            self.render_pass = engine.create(self, data, scene)
+
     def render(self, scene):
-        scale = scene.render.resolution_percentage / 100.0
-        self.size_x = int(scene.render.resolution_x * scale)
-        self.size_y = int(scene.render.resolution_y * scale)
-
-        self.render_scene(scene)
-
-    def render_scene(self, scene):
-        pixel_count = self.size_x * self.size_y
-
-        blue_rect = [[0.0, 0.0, 1.0, 1.0]] * pixel_count
-
-        result = self.begin_result(0, 0, self.size_x, self.size_y)
-        layer = result.layers[0].passes["Combined"]
-        layer.rect = blue_rect
-        self.end_result(result)
+        print('start rendering')
+        if self.render_pass is not None:
+            engine.render(self)
 
 def register ():
     from . import ui
@@ -181,6 +180,5 @@ def register ():
 
 def unregister ():
     from . import ui
-
     ui.unregister()
     bpy.utils.unregister_module(__name__)
