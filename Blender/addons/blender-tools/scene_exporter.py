@@ -22,6 +22,9 @@ def get_scene_data():
 
 def export_scene (outdir, filename):
     scene_data = OrderedDict()
+    scene_data['resolutionX'] = bpy.data.scenes['Scene'].render.resolution_x
+    scene_data['resolutionY'] = bpy.data.scenes['Scene'].render.resolution_y
+    scene_data['resolutionPercentage'] = bpy.data.scenes['Scene'].render.resolution_percentage
     scene_data.update(export_camera())
     scene_data.update(export_lights())
     outfilename = os.path.join(outdir, filename)
