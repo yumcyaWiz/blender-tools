@@ -2,8 +2,12 @@ import bpy
 from .scene_exporter import get_scene_data, export_scene
 from collections import OrderedDict
 from ws4py.client.threadedclient import WebSocketClient
+import ws4py.messaging
 import json
 import threading
+from io import BytesIO
+import struct
+from . import engine
 
 bl_info = {
     "name": "Blender Tools",
@@ -39,7 +43,28 @@ class WSClient(WebSocketClient):
         print(("Closed down", code, reason))
 
     def received_message(self, m):
-        print("=> %d %s" % (len(m), str(m)))
+        if isinstance(m, ws4py.messaging.TextMessage):
+            print("=> %d %s" % (len(m), str(m)))
+        elif isinstance(m, ws4py.messaging.BinaryMessage):
+            print("=> binary")
+            out = BytesIO(m.data)
+            img_data = []
+            index = 0
+            rgba = []
+            b = out.read(4)
+            while b:
+                rgba.append(struct.unpack("f", b)[0])
+                if index % 3 == 2:
+                    rgba.append(1)
+                    img_data.append(rgba)
+                    rgba = []
+                b = out.read(4)
+                index += 1
+#            print(img_data)
+            out.close()
+            engine.update(img_data)
+            th_me = threading.Thread(target=bpy.ops.render.render, name="th_me")
+            th_me.start()
 
 g_exporting_scene = False
 # dof_distance and fstop are not detected by is_updated.
@@ -53,8 +78,15 @@ class Panel(bpy.types.Panel):
     bl_space_type = "VIEW_3D"
     bl_region_type = "TOOL_PROPS"
 
+    @classmethod
+    def poll(cls, context):
+        renderer = context.scene.render
+        return renderer.engine == "TOOLS_RENDER"
+
     def draw(self, context):
         global g_exporting_scene
+        if context.scene.render.engine != "TOOLS_RENDER":
+            return
         if g_exporting_scene:
             self.layout.operator("export.stop",
                                  text="Stop Scene Exporter",
@@ -86,9 +118,6 @@ class StartExportButtonOperation(bpy.types.Operator):
         g_dof_distance = -1
         g_fstop = -1
 
-        if g_ws_connected:
-            send_scene_data(g_ws)
-        write_scene_data()
         bpy.app.handlers.scene_update_post.append(scene_update)
         return {'FINISHED'}
 
@@ -148,7 +177,6 @@ def scene_update(context):
     g_update_timer = threading.Timer(0.5, export_data)
     g_update_timer.start()
 
-from . import engine
 class ToolsRender(bpy.types.RenderEngine):
     bl_idname = 'TOOLS_RENDER'
     bl_label = 'Blender Tools Preview'
