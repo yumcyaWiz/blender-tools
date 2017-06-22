@@ -5,6 +5,20 @@ import bl_ui.properties_render as properties_render
 properties_render.RENDER_PT_render.COMPAT_ENGINES.add('TOOLS_RENDER')
 properties_render.RENDER_PT_dimensions.COMPAT_ENGINES.add('TOOLS_RENDER')
 
+## enable default ui for Material
+import bl_ui.properties_material as properties_material
+properties_material.MATERIAL_PT_context_material.COMPAT_ENGINES.add('TOOLS_RENDER')
+#properties_material.MATERIAL_PT_preview.COMPAT_ENGINES.add('TOOLS_RENDER')
+properties_material.MATERIAL_PT_diffuse.COMPAT_ENGINES.add('TOOLS_RENDER')
+#properties_material.MATERIAL_PT_custom_props.COMPAT_ENGINES.add('TOOLS_RENDER')
+del properties_material
+
+## enable default ui for Textures
+import bl_ui.properties_texture as properties_texture
+properties_texture.TEXTURE_PT_context_texture.COMPAT_ENGINES.add('TOOLS_RENDER')
+properties_texture.TEXTURE_PT_preview.COMPAT_ENGINES.add('TOOLS_RENDER')
+properties_texture.TEXTURE_PT_image.COMPAT_ENGINES.add('TOOLS_RENDER')
+
 # enable default ui for Lamp
 import bl_ui.properties_data_lamp as properties_data_lamp
 properties_data_lamp.DATA_PT_context_lamp.COMPAT_ENGINES.add('TOOLS_RENDER')

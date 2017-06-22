@@ -21,6 +21,7 @@ def get_scene_data():
     scene_data['resolutionPercentage'] = bpy.data.scenes['Scene'].render.resolution_percentage
     scene_data.update(export_camera())
     scene_data.update(export_lights())
+    scene_data.update(export_shapes())
     return scene_data
 
 def export_scene (outdir, filename):
@@ -48,6 +49,23 @@ def export_camera():
     camera_data = OrderedDict()
     camera_data['camera'] = camera_param
     return camera_data
+
+def export_shapes():
+    shapes = OrderedDict()
+    shapes['shapes'] = []
+    for obj in bpy.data.objects:
+        obj_type = obj.type
+        if obj_type != 'MESH':
+            continue
+        obj_data = OrderedDict()
+        obj_data['name'] = obj.name
+        if len(obj.material_slots) > 0:
+            mat = obj.material_slots[0].material
+            obj_data['material'] = OrderedDict()
+            obj_data['material']['name'] = mat.name
+            obj_data['material']['diffuseColor'] = [c for c in mat.diffuse_color]
+        shapes['shapes'].append(obj_data)
+    return shapes
 
 def export_lights():
     lights = []
