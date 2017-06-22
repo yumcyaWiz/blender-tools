@@ -145,16 +145,11 @@ def scene_update(context):
     global g_ws_connected
     global g_update_timer
     is_updated = False
-    if bpy.data.objects.is_updated:
-        for ob in bpy.data.objects:
-            if ob.is_updated or ob.is_updated_data:
-                is_updated = True
-        for ob in bpy.data.lamps:
-            if ob.is_updated or ob.is_updated_data:
-                is_updated = True
-        for ob in bpy.data.cameras:
-            if ob.is_updated or ob.is_updated_data:
-                is_updated = True
+
+    is_updated = (bpy.data.objects.is_updated or
+                  bpy.data.materials.is_updated or
+                  bpy.data.lamps.is_updated or
+                  bpy.data.cameras.is_updated)
 
     if g_dof_distance != bpy.data.cameras['Camera'].dof_distance:
         is_updated = True
