@@ -67,7 +67,7 @@ class ToolsRenderPanelBase(object):
         return renderer.engine == "TOOLS_RENDER"
 
 
-class ToolsRenderSettingsPanel(bpy.types.Panel, ToolsRenderPanelBase):
+class TOOLS_PT_RenderSettingsPanel(bpy.types.Panel, ToolsRenderPanelBase):
     COMPAT_ENGINES = {'TOOLS_RENDER'}
     bl_label = "Settings"
 
@@ -79,9 +79,9 @@ class ToolsRenderSettingsPanel(bpy.types.Panel, ToolsRenderPanelBase):
 def register():
     # bpy.types.INFO_MT_render.append(Tools_menu)
     bpy.utils.register_class(ToolsPreferences)
-    bpy.utils.register_class(ToolsRenderSettingsPanel)
+    bpy.utils.register_class(TOOLS_PT_RenderSettingsPanel)
 
 
 def unregister():
     bpy.utils.unregister_class(ToolsPreferences)
-    bpy.utils.unregister_class(ToolsRenderSettingsPanel)
+    bpy.utils.unregister_class(TOOLS_PT_RenderSettingsPanel)
