@@ -159,6 +159,10 @@ def scene_update(context):
     global g_update_timer
     is_updated = False
 
+    deps = bpy.context.evaluated_depsgraph_get()
+    is_updated = len(deps.updates) > 0
+
+    """
     is_updated = (bpy.data.objects.is_updated or
                   bpy.data.materials.is_updated or
                   bpy.data.lamps.is_updated or
@@ -170,6 +174,7 @@ def scene_update(context):
     if g_fstop != bpy.data.cameras['Camera'].gpu_dof.fstop:
         is_updated = True
         g_fstop = bpy.data.cameras['Camera'].gpu_dof.fstop
+    """
 
     if is_updated == False:
         return
