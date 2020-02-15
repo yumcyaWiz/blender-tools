@@ -176,9 +176,9 @@ def scene_update(context):
     print('scene was updated')
 
     def export_data():
+        write_scene_data()
         if g_ws_connected:
             send_scene_data(g_ws)
-        write_scene_data()
 
     if g_update_timer is not None:
         g_update_timer.cancel()
