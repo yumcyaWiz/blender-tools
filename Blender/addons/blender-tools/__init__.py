@@ -7,7 +7,7 @@ import json
 import threading
 from io import BytesIO
 import struct
-# from . import engine
+from . import engine
 
 bl_info = {
     "name": "Blender Tools",
