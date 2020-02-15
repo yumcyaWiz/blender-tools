@@ -44,7 +44,7 @@ def Tools_menu(self, context):
 class ToolsPreferences(bpy.types.AddonPreferences):
     bl_idname = __package__
 
-    out_dir = StringProperty(
+    out_dir: StringProperty(
         name="Path to scene file folder",
         description="Path to scene file folder",
         subtype="DIR_PATH",
