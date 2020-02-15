@@ -196,9 +196,9 @@ class ToolsRender(bpy.types.RenderEngine):
         self.render_pass = None
 
     def __del__(self):
+        pass
         # if hasattr(engine, 'render_pass') and self.render_pass is not None:
         # del self.render_pass
-        pass
 
     def update(self, data, scene):
         print('update')
