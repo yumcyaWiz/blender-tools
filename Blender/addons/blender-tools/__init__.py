@@ -81,7 +81,7 @@ g_ws = False
 g_ws_connected = False
 
 
-class BT_PT_Panel(bpy.types.Panel):
+class TOOLS_PT_Panel(bpy.types.Panel):
     bl_label = "blender-tools"
     bl_space_type = "VIEW_3D"
     bl_region_type = "TOOLS"
@@ -105,7 +105,7 @@ class BT_PT_Panel(bpy.types.Panel):
                                  icon='PLAY')
 
 
-class BT_OT_StartExportButtonOperation(bpy.types.Operator):
+class TOOLS_OT_StartExportButtonOperation(bpy.types.Operator):
     bl_idname = "export.start"
     bl_label = "text"
 
@@ -131,7 +131,7 @@ class BT_OT_StartExportButtonOperation(bpy.types.Operator):
         return {'FINISHED'}
 
 
-class BT_OT_StopExportButtonOperation(bpy.types.Operator):
+class TOOLS_OT_StopExportButtonOperation(bpy.types.Operator):
     bl_idname = "export.stop"
     bl_label = "text"
 
@@ -212,9 +212,9 @@ class ToolsRender(bpy.types.RenderEngine):
 
 
 classes = [
-    BT_PT_Panel,
-    BT_OT_StartExportButtonOperation,
-    BT_OT_StopExportButtonOperation,
+    TOOLS_PT_Panel,
+    TOOLS_OT_StartExportButtonOperation,
+    TOOLS_OT_StopExportButtonOperation,
     ToolsRender
 ]
 
