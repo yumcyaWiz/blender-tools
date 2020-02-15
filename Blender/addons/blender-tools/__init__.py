@@ -213,9 +213,9 @@ class ToolsRender(bpy.types.RenderEngine):
 
 classes = [
     BT_PT_Panel,
-    # StartExportButtonOperation,
-    # StopExportButtonOperation,
-    # ToolsRender
+    StartExportButtonOperation,
+    StopExportButtonOperation,
+    ToolsRender
 ]
 
 
