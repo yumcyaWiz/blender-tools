@@ -127,7 +127,7 @@ class TOOLS_OT_StartExportButtonOperation(bpy.types.Operator):
         g_dof_distance = -1
         g_fstop = -1
 
-        bpy.app.handlers.scene_update_post.append(scene_update)
+        bpy.app.handlers.depsgraph_update_post.append(scene_update)
         return {'FINISHED'}
 
 
@@ -144,7 +144,7 @@ class TOOLS_OT_StopExportButtonOperation(bpy.types.Operator):
         g_ws_connected = False
         g_exporting_scene = False
         print('stop')
-        bpy.app.handlers.scene_update_post.remove(scene_update)
+        bpy.app.handlers.depsgraph_update_post.remove(scene_update)
         return {'FINISHED'}
 
 
