@@ -105,7 +105,7 @@ class BT_PT_Panel(bpy.types.Panel):
                                  icon='PLAY')
 
 
-class StartExportButtonOperation(bpy.types.Operator):
+class BT_OT_StartExportButtonOperation(bpy.types.Operator):
     bl_idname = "export.start"
     bl_label = "text"
 
@@ -131,7 +131,7 @@ class StartExportButtonOperation(bpy.types.Operator):
         return {'FINISHED'}
 
 
-class StopExportButtonOperation(bpy.types.Operator):
+class BT_OT_StopExportButtonOperation(bpy.types.Operator):
     bl_idname = "export.stop"
     bl_label = "text"
 
@@ -213,8 +213,8 @@ class ToolsRender(bpy.types.RenderEngine):
 
 classes = [
     BT_PT_Panel,
-    StartExportButtonOperation,
-    StopExportButtonOperation,
+    BT_OT_StartExportButtonOperation,
+    BT_OT_StopExportButtonOperation,
     ToolsRender
 ]
 
