@@ -66,7 +66,7 @@ class WSClient(WebSocketClient):
                 index += 1
 #            print(img_data)
             out.close()
-            # engine.update(img_data)
+            engine.update(img_data)
             th_me = threading.Thread(
                 target=bpy.ops.render.render, name="th_me")
             th_me.start()
@@ -197,18 +197,18 @@ class ToolsRender(bpy.types.RenderEngine):
 
     def __del__(self):
         pass
-        # if hasattr(engine, 'render_pass') and self.render_pass is not None:
-        # del self.render_pass
+        if hasattr(engine, 'render_pass') and self.render_pass is not None:
+            del self.render_pass
 
     def update(self, data, scene):
         print('update')
-        # if not self.render_pass:
-        # self.render_pass = engine.create(self, data, scene)
+        if not self.render_pass:
+            self.render_pass = engine.create(self, data, scene)
 
     def render(self, scene):
         print('start rendering')
-        # if self.render_pass is not None:
-        # engine.render(self)
+        if self.render_pass is not None:
+            engine.render(self)
 
 
 classes = [
