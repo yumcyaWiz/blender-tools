@@ -81,10 +81,10 @@ g_ws = False
 g_ws_connected = False
 
 
-class Panel(bpy.types.Panel):
+class BT_PT_Panel(bpy.types.Panel):
     bl_label = "blender-tools"
     bl_space_type = "VIEW_3D"
-    bl_region_type = "TOOL_PROPS"
+    bl_region_type = "TOOLS"
 
     @classmethod
     def poll(cls, context):
@@ -212,10 +212,10 @@ class ToolsRender(bpy.types.RenderEngine):
 
 
 classes = [
-    Panel,
-    StartExportButtonOperation,
-    StopExportButtonOperation,
-    ToolsRender
+    BT_PT_Panel,
+    # StartExportButtonOperation,
+    # StopExportButtonOperation,
+    # ToolsRender
 ]
 
 
