@@ -34,9 +34,10 @@ def send_scene_data(ws):
 
 
 def write_scene_data():
-    user_preferences = bpy.context.user_preferences
-    pref = user_preferences.addons[__package__].preferences
-    export_scene(pref.out_dir, 'scene.json')
+    # user_preferences = bpy.context.user_preferences
+    # pref = user_preferences.addons[__package__].preferences
+    # export_scene(pref.out_dir, 'scene.json')
+    export_scene("/tmp/", 'scene.json')
 
 
 class WSClient(WebSocketClient):
