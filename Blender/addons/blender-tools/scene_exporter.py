@@ -48,8 +48,8 @@ def export_camera():
     camera_param['lens'] = bpy.data.cameras['Camera'].lens
     camera_param['sensorWidth'] = bpy.data.cameras['Camera'].sensor_width
     camera_param['sensorHeight'] = bpy.data.cameras['Camera'].sensor_height
-    camera_param['dofDistance'] = bpy.data.cameras['Camera'].dof_distance
-    camera_param['fStop'] = bpy.data.cameras['Camera'].gpu_dof.fstop
+    camera_param['dofDistance'] = bpy.data.cameras['Camera'].dof.focus_distance
+    camera_param['fStop'] = bpy.data.cameras['Camera'].dof.aperture_fstop
     camera_param['up'] = vec2array(
         (obj_camera.matrix_world @ Vector((0, 1, 0, 0))).xyz)
 
