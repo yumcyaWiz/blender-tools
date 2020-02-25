@@ -85,7 +85,7 @@ g_ws_connected = False
 class TOOLS_PT_Panel(bpy.types.Panel):
     bl_label = "blender-tools"
     bl_space_type = "VIEW_3D"
-    bl_region_type = "TOOLS"
+    bl_region_type = "UI"
 
     @classmethod
     def poll(cls, context):
