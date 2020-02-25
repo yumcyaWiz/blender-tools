@@ -44,7 +44,19 @@ def pbrt_string(scene_data):
     uz = camera['up'][2]
     ret += "LookAt {0} {1} {2} {3} {4} {5} {6} {7} {8}\n".format(
         ox, oy, oz, lx, ly, lz, ux, uy, uz)
+
     # film
+    resx = scene_data['resolutionX']
+    resy = scene_data['resolutionY']
+    filmx = 1e-3 * camera['sensorWidth']
+    filmy = 1e-3 * camera['sensorHeight']
+    diagonal = math.sqrt(filmx * filmx + filmy * filmy)
+    ret += 'Film "image" "integer xresolution" [ {0} ] "integer yresolution" [ {1} ] "float diagonal" [ {2} ] "string filename" [ "pbrt.exr" ]\n'.format(
+        resx, resy, diagonal)
+
+    # camera
+    fov = camera['fov']
+    ret += 'Camera "perspective" "float fov" [ {0} ]\n'.format(fov)
 
     return ret
 
