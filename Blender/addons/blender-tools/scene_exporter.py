@@ -28,11 +28,40 @@ def get_scene_data():
     return scene_data
 
 
+def pbrt_string(scene_data):
+    camera = scene_data['camera']
+
+    ret = ""
+    # lookat transform
+    ox = camera['location'][0]
+    oy = camera['location'][1]
+    oz = camera['location'][2]
+    lx = camera['lookat'][0]
+    ly = camera['lookat'][1]
+    lz = camera['lookat'][2]
+    ux = camera['up'][0]
+    uy = camera['up'][1]
+    uz = camera['up'][2]
+    ret += "LookAt {0} {1} {2} {3} {4} {5} {6} {7} {8}\n".format(
+        ox, oy, oz, lx, ly, lz, ux, uy, uz)
+    # film
+
+    return ret
+
+
 def export_scene(outdir, filename):
     scene_data = get_scene_data()
-    outfilename = os.path.join(outdir, filename)
+
+    # JSON output
+    outfilename = os.path.join(outdir, filename + '.json')
     f = open(outfilename, "w")
     f.write(json.dumps(scene_data, indent=4))
+    f.close()
+
+    # PBRT output
+    outfilename = os.path.join(outdir, filename + '.pbrt')
+    f = open(outfilename, "w")
+    f.write(pbrt_string(scene_data))
     f.close()
 
 
