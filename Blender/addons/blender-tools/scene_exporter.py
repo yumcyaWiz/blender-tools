@@ -79,7 +79,7 @@ def export_shapes():
 
 def export_lights():
     lights = []
-    for light in bpy.data.lamps:
+    for light in bpy.data.lights:
         light_data = OrderedDict()
         type_name = str(light.type)
         light_data['type'] = type_name
